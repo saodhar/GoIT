@@ -25,7 +25,7 @@ public class BasicMarket {
         System.out.println("1. Display list of all users");
         System.out.println("2. Display list of all products");
         System.out.println("3. Purchase a product for a user");
-        System.out.println("4. Display list of user products by user id");
+        System.out.println("4. Display list of purchases by user id");
         System.out.println("5. Display list of buyers by product id");
         System.out.println("6. Quit");
 
@@ -107,7 +107,7 @@ public class BasicMarket {
             this.menu();
         }
         if (money < price) {
-            throw new BrokeException();
+            throw new BrokeException(buyerList[buyerID - 1].getBName(), productList[productID - 1].getPName());
         } else {
             buyerList[buyerID - 1].spendMoney(price);
             if (purchases.containsKey(buyerID)) {
@@ -118,8 +118,9 @@ public class BasicMarket {
                 tempPurchases.add(productID);
                 purchases.put(buyerID, tempPurchases);
             }
+            System.out.println("User " + buyerList[buyerID - 1].getBName() + " successfully bought " + productList[productID - 1].getPName() + "\n");
         }
-        System.out.println();
+
         this.menu();
     }
 
@@ -246,7 +247,7 @@ class Product {
 }
 
 class BrokeException extends Exception {
-    BrokeException() {
-        super("Not enough money!" + "\n");
+    BrokeException(String buyerName, String productName) {
+        super("User " + buyerName + " doesn't have enough money to purchase " + productName + "\n");
     }
 }
